@@ -67,6 +67,6 @@ mod tests {
         println!("{:?}", csv_parser);
 
         assert_eq!(csv_parser.header, expected);
-        assert_eq!(csv_parser.header.len(), 5);
+        assert_eq!(csv_parser.rows.len(), 5);
     }
 }
