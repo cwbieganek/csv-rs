@@ -7,42 +7,6 @@ pub struct CsvParser {
 }
 
 impl CsvParser {
-    // This currently assumes there are no commas in cells (for now).
-    // It will also strip " from the start and end of cells (for now).
-    pub fn new_old_version(csv_path: &String) -> Self {
-        let file_contents = fs::read_to_string(&csv_path).expect("Failed to read CSV.");
-        let mut lines = file_contents.lines();
-        let mut header: Vec<String> = Vec::new();
-        let mut rows: Vec<Vec<String>> = Vec::new();
-
-        // Start with the header of the CSV
-        if let Some(first_line) = lines.next() {
-            let header_split = first_line.split(",");
-
-            for cell in header_split {
-                header.push(String::from(cell.trim()));
-            }
-        } else {
-            panic!("CSV has no data.");
-        }
-
-        for row in lines {
-            let row_split = row.split(",");
-            let mut row_vec: Vec<String> = Vec::new();
-
-            for cell in row_split {
-                row_vec.push(String::from(cell.trim()));
-            }
-
-            rows.push(row_vec);
-        }
-
-        Self {
-            header: header.clone(),
-            rows: rows.clone()
-        }
-    }
-
     pub fn new(csv_path: &String) -> Self {
         let file_contents = fs::read_to_string(&csv_path).expect("Failed to read CSV.");
         let mut lines = file_contents.lines();
