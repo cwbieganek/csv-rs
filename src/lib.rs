@@ -1,3 +1,4 @@
+#![allow(dead_code, unused)]
 use std::fs;
 
 #[derive(Debug)]
@@ -35,6 +36,7 @@ fn parse_line(line: &str) -> Vec<String> {
     let mut row: Vec<String> = Vec::new();
     let mut in_cell = true;
     let mut in_quoted_cell = false;
+    let mut skip_next_comma = false;
 
     // If the very first cell is quote-delimited, switch in_cell to false
     // This will guarantee that the first " will be ignored.
@@ -57,6 +59,7 @@ fn parse_line(line: &str) -> Vec<String> {
 
                 row.push(cell.clone());
                 cell = String::new();
+                skip_next_comma = true;
             } else {
                 // We are now in a quote-delimited cell
                 in_cell = true;
@@ -66,6 +69,11 @@ fn parse_line(line: &str) -> Vec<String> {
             // Must be the end of the line
             return row;
         } else if char == ',' {
+            if skip_next_comma {
+              skip_next_comma = false;
+              continue;
+            }
+
             if in_quoted_cell {
                 cell.push(char);
             } else {
