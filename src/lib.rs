@@ -95,7 +95,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
+    fn no_quotes() {
         let csv_parser = CsvParser::new(&String::from("test.csv"));
         let expected = vec![
             String::from("Column 1"),
@@ -109,5 +109,24 @@ mod tests {
 
         assert_eq!(csv_parser.header, expected);
         assert_eq!(csv_parser.rows.len(), 5);
+    }
+
+    #[test]
+    fn with_quotes() {
+        let csv_parser = CsvParser::new(&String::from("test_with_quotes.csv"));
+        let expected = vec![
+            String::from("Column 1"),
+            String::from("Column 2"),
+            String::from("Column 3"),
+            String::from("Column 4"),
+            String::from("Column 5")
+        ];
+
+        println!("{:?}", csv_parser);
+
+        assert_eq!(csv_parser.header, expected);
+        assert_eq!(csv_parser.rows.len(), 5);
+        assert_eq!(csv_parser.rows[1][1], String::from("hello,world"));
+        assert_eq!(csv_parser.rows[1][2], String::from("baz"));
     }
 }
